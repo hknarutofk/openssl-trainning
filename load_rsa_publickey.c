@@ -32,4 +32,22 @@ void main()
     RSA_print_fp(stdout, rsa_publickey, 0);
 
     BIO_free(bio);
+
+    //加载方式2，字符串输入
+    char *pubString = "-----BEGIN PUBLIC KEY-----\n"
+                      "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA3/mncP8WG/w9X9X2L0qs\n"
+                      "Pni0o1D8DGGPrDprwJXiYvm/wp+UpIQo9IMP2TxO4CRRC86Bsu8gjfZeViqz8qio\n"
+                      "FXMB6ujnvqWDgJNAqwKzh+Q6SdxWkYZZfTUCEOh2OkjGSSsgdOF+ZVV9XiZrUcTb\n"
+                      "XpTxE4eW5AG2Ii9bDK4AkKrDwOwb6IozuA4EGZPQg8EN0FzgycfYX4n40REzt68P\n"
+                      "w/hZS9BbX2dPUYgJGLqghoiuQk5IRdvZx3oysvm41qZgZkrbar0gccyMXIoX61FA\n"
+                      "78yzlyhcSwUsbkB1CO54iywiY2SoCkA3/e9ZoQdoHDjpIlLwAUz8eH71hB1QWjDG\n"
+                      "dQIDAQAB\n"
+                      "-----END PUBLIC KEY-----";
+    int pubStringLen = strlen(pubString);
+    bio = BIO_new_mem_buf(pubString, pubStringLen);
+    rsa_publickey = PEM_read_bio_RSA_PUBKEY(bio, &rsa_publickey, NULL, NULL);
+    printf("%X\n", rsa_publickey);
+    RSA_print_fp(stdout, rsa_publickey, 0);
+    BIO_free(bio);
+    printf("zzzzzzzzzzzzzz\n");
 }
