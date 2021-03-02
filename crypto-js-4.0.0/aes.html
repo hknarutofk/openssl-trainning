@@ -1,0 +1,40 @@
+<html>
+
+<head>
+    <script type="text/javascript" src="crypto-js.js"></script>
+    <script type="text/javascript">
+        // let keyStr = "01234567890123456789012345678901"
+        // //加密
+        // // export function encrypt(word, keyStr){ 
+        // function encrypt(word) {
+        //     var key = CryptoJS.enc.Utf8.parse(keyStr);//Latin1 w8m31+Yy/Nw6thPsMpO5fg==
+        //     var srcs = CryptoJS.enc.Utf8.parse(word);
+        //     var encrypted = CryptoJS.AES.encrypt(srcs, key, { mode: CryptoJS.mode.ECB, padding: CryptoJS.pad.Pkcs7 });
+        //     return encrypted.toString();
+        // }
+
+        // //解密
+        // // export function decrypt(word, keyStr){  
+        // function decrypt(word) {
+        //     var key = CryptoJS.enc.Utf8.parse(keyStr);//Latin1 w8m31+Yy/Nw6thPsMpO5fg==
+        //     var decrypt = CryptoJS.AES.decrypt(word, key, { mode: CryptoJS.mode.ECB, padding: CryptoJS.pad.Pkcs7 });
+        //     return CryptoJS.enc.Utf8.stringify(decrypt).toString();
+        // }
+        // console.log(encrypt("The quick brown fox jumps over the lazy dog1234"));
+
+
+        // Encrypt
+        var ciphertext = CryptoJS.AES.encrypt(CryptoJS.enc.Utf8.parse('123456'), CryptoJS.enc.Utf8.parse('12345678901234567890123456789012'), { mode: CryptoJS.mode.ECB, padding: CryptoJS.pad.Pkcs7 }).toString();
+        console.log(ciphertext);
+        // Decrypt        
+        var bytes = CryptoJS.AES.decrypt(ciphertext, CryptoJS.enc.Utf8.parse('12345678901234567890123456789012'), { mode: CryptoJS.mode.ECB, padding: CryptoJS.pad.Pkcs7 });
+        var originalText = bytes.toString(CryptoJS.enc.Utf8);
+        console.log(originalText); // 'my message'
+    </script>
+</head>
+
+<body>
+
+</body>
+
+</html>
