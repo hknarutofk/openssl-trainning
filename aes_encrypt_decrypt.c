@@ -21,13 +21,17 @@ void printhexDump(const char *buffer, size_t len)
 int main()
 {
     unsigned char key[32] = "12345678901234567890123456789012";
-    unsigned char *rawData = "123456";
+    unsigned char *rawData = "12345678901234561234567890123456";
     int rawDataLen = strlen(rawData);
     int encLen = 0;
     int outLen = 0;
 
-    unsigned char encData[1024];
+    //明文密文长度关系 https://www.cnblogs.com/lori/archive/2020/12/30/14210066.html
+    //预计的密文长度
+    int encDataLen = (rawDataLen / 16 + 1) * 16;
+    unsigned char *encData = (unsigned char *)malloc(encDataLen);
     printf("%s\n", rawData);
+    printf("%d\n", encDataLen);
 
     EVP_CIPHER_CTX *ctx;
     ctx = EVP_CIPHER_CTX_new();
@@ -38,6 +42,7 @@ int main()
     printf("%d\n", encLen);
     EVP_CipherFinal(ctx, encData + outLen, &outLen);
     encLen += outLen;
+    //实际密文长度
     printf("%d\n", encLen);
     EVP_CIPHER_CTX_free(ctx);
     printhexDump(encData, encLen);
@@ -45,7 +50,8 @@ int main()
     //
     int decLen = 0;
     int outlen = 0;
-    unsigned char decData[1024];
+    // 明文长度<=密文长度，解密缓冲区可以直接取密文长度
+    unsigned char *decData = (unsigned char *)malloc(encLen);
     EVP_CIPHER_CTX *ctx2;
     ctx2 = EVP_CIPHER_CTX_new();
     EVP_CipherInit_ex(ctx2, EVP_aes_256_ecb(), NULL, key, NULL, AES_DECRYPT);
@@ -57,6 +63,9 @@ int main()
 
     decData[decLen] = '\0';
     printf("decrypt: %s\n", decData);
+
+    free(encData);
+    free(decData);
     return 0;
 }
 
